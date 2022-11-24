@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.18.1)
 
-project("jni")
+project("uvc_camera")
 
-include_directories(./libuvc/include)
+#include_directories(libusb/android/examples)
+set(libs ${CMAKE_SOURCE_DIR}/libusb/android/libs/${CMAKE_ANDROID_ARCH_ABI})
+
+add_library(libusb1.0 SHARED IMPORTED)
+set_target_properties(libusb1.0 PROPERTIES IMPORTED_LOCATION ${libs}/libusb1.0.so)
+
+include_directories(libuvc/include)
 set(uvc
         libuvc/src/ctrl.c
         libuvc/src/ctrl-gen.c
@@ -12,15 +18,11 @@ set(uvc
         libuvc/src/stream.c
         libuvc/src/misc.c)
 
-set(libs ${CMAKE_SOURCE_DIR}/libusb)
-add_library(libusb100 SHARED IMPORTED)
-set_target_properties(libusb100 PROPERTIES IMPORTED_LOCATION ${libs}/libusb100.so)
-
-add_library(jni-demo SHARED hello.cpp ${uvc})
+add_library(uvc_camera SHARED uvc_camera/uvc_camera.cpp ${uvc})
 
 find_library(log-lib log)
 
 target_link_libraries(
-        jni-demo
-        libusb100
+        uvc_camera
+        libusb1.0
         ${log-lib})
