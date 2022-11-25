@@ -7,6 +7,8 @@ set(libs ${CMAKE_SOURCE_DIR}/libusb/android/libs/${CMAKE_ANDROID_ARCH_ABI})
 
 add_library(libusb1.0 SHARED IMPORTED)
 set_target_properties(libusb1.0 PROPERTIES IMPORTED_LOCATION ${libs}/libusb1.0.so)
+add_library(libunrooted_android SHARED IMPORTED)
+set_target_properties(libunrooted_android PROPERTIES IMPORTED_LOCATION ${libs}/libunrooted_android.so)
 
 include_directories(libuvc/include)
 set(uvc
